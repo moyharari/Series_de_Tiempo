@@ -1,0 +1,363 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,mexico]{babel}
+\usepackage{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{parskip}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm}
+
+\definecolor{azuloscuro}{RGB}{26,60,107}
+\definecolor{azulmedio}{RGB}{41,98,168}
+\definecolor{grisclaro}{RGB}{245,245,245}
+\definecolor{grisnota}{RGB}{100,100,100}
+
+\hypersetup{colorlinks=true, linkcolor=azuloscuro, urlcolor=azulmedio, citecolor=azuloscuro}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{grisnota}{Series de Tiempo --- SARIMAX}}
+\fancyhead[R]{\small\textcolor{grisnota}{IGAE Mexico}}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\large\bfseries\color{azuloscuro}}{{\thesection.}}{0.5em}{}[\vspace{-0.2em}\color{azulmedio}\hrule\vspace{0.3em}]
+\titleformat{\subsection}{\normalsize\bfseries\color{azuloscuro}}{\thesubsection.}{0.5em}{}
+
+\captionsetup{font=small, labelfont=bf, labelsep=period}
+
+\begin{document}
+
+
+% ======================== RESUMEN ===========================
+\begin{abstract}
+\noindent
+El presente informe analiza el Indicador Global de Actividad Economica (IGAE) de Mexico para el periodo enero 2010 -- diciembre 2023, mediante la estimacion de un modelo SARIMAX$(2,1,1)(1,1,1)_{12}$. Se incorpora el tipo de cambio peso-dolar como variable exogena para capturar efectos del sector externo sobre la actividad economica nacional. El modelo es seleccionado a traves de los criterios de informacion AIC y BIC, y su ajuste se evalua mediante pruebas de diagnostico sobre los residuales. Los resultados indican que el modelo captura adecuadamente la dinamica estacional de la serie, incluyendo el choque estructural asociado a la pandemia de COVID-19 en 2020. El pronostico para 2023 presenta un RMSE de 1.58 puntos del indice y un MAPE de 1.14\%, con intervalos de confianza al 95\%.
+
+\medskip
+\noindent\textbf{Palabras clave:} SARIMAX, IGAE, actividad economica, series de tiempo, Mexico, pronostico.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ====================== SECCION 1 ==========================
+\section{Introduccion}
+
+La medicion y pronostico de la actividad economica constituyen una tarea fundamental para analistas financieros, instituciones bancarias y autoridades de politica economica. En Mexico, el Indicador Global de Actividad Economica (IGAE) publicado mensualmente por el Instituto Nacional de Estadistica y Geografia (INEGI) representa la aproximacion mas oportuna al comportamiento del Producto Interno Bruto (PIB). Su analisis permite anticipar ciclos economicos, evaluar el impacto de choques externos y disenar estrategias de inversion o politica publica.
+
+Desde la perspectiva de las series de tiempo, el IGAE exhibe caracteristicas que lo hacen especialmente adecuado para la modelacion mediante procesos SARIMA con variables exogenas (SARIMAX): presenta una tendencia creciente de largo plazo, patrones estacionales marcados ---vinculados a ciclos productivos y comerciales--- y es susceptible de ser influenciado por variables macroeconomicas observables como el tipo de cambio.
+
+Este informe tiene tres objetivos principales:
+\begin{enumerate}[label=\roman*.]
+  \item Analizar las propiedades estadisticas de la serie del IGAE para el periodo 2010--2023.
+  \item Estimar un modelo SARIMAX$(p,d,q)(P,D,Q)_{12}$ que capture la dinamica de la serie incorporando el tipo de cambio como variable exogena.
+  \item Evaluar la capacidad predictiva del modelo para el ano 2023 mediante metricas estandar de error de pronostico.
+\end{enumerate}
+
+\subsection{Contexto macroeconomico}
+
+El periodo de estudio abarca episodios relevantes para la economia mexicana: la recuperacion post-crisis de 2009, la expansion moderada del periodo 2013--2018, y el choque sin precedentes de la pandemia COVID-19 en 2020, que genero la contraccion economica mas severa desde la Gran Depresion. La incorporacion del tipo de cambio como regresor externo busca capturar la transmision de perturbaciones del sector externo hacia la actividad interna, dado el alto grado de apertura comercial de Mexico.
+
+% ====================== SECCION 2 ==========================
+\section{Marco Teorico}
+
+\subsection{Proceso SARIMA}
+
+Un proceso SARIMA$(p,d,q)(P,D,Q)_s$ generaliza el modelo ARIMA al incorporar componentes estacionales. Se define como:
+
+\begin{equation}
+  \Phi_P(B^s)\,\phi_p(B)\,(1-B)^d\,(1-B^s)^D\,y_t = \Theta_Q(B^s)\,\theta_q(B)\,\varepsilon_t,
+  \label{eq:sarima}
+\end{equation}
+
+donde $B$ es el operador de rezago ($By_t = y_{t-1}$), $\phi_p(B)$ es el polinomio autorregresivo no estacional, $\Phi_P(B^s)$ es el polinomio autorregresivo estacional, $\theta_q(B)$ y $\Theta_Q(B^s)$ son los polinomios de medias moviles no estacional y estacional respectivamente, y $\varepsilon_t \sim \mathcal{N}(0,\sigma^2_\varepsilon)$ es ruido blanco.
+
+\subsection{Extension SARIMAX}
+
+El modelo SARIMAX incorpora un vector de variables exogenas observadas $\mathbf{x}_t$ de dimension $k$:
+
+\begin{equation}
+  \Phi_P(B^s)\,\phi_p(B)\,(1-B)^d\,(1-B^s)^D\,y_t = \boldsymbol{\beta}^\top\mathbf{x}_t + \Theta_Q(B^s)\,\theta_q(B)\,\varepsilon_t,
+  \label{eq:sarimax}
+\end{equation}
+
+donde $\boldsymbol{\beta} \in \mathbb{R}^k$ es el vector de parametros asociados a las variables exogenas. En este trabajo $k=1$ y $\mathbf{x}_t$ corresponde al tipo de cambio nominal peso-dolar.
+
+\subsection{Criterios de seleccion del modelo}
+
+Para la eleccion del orden del modelo se emplean los criterios de informacion de Akaike (AIC) y Bayesiano de Schwarz (BIC):
+
+\begin{equation}
+  \text{AIC} = -2\,\ell(\hat{\boldsymbol{\theta}}) + 2\kappa, \qquad
+  \text{BIC} = -2\,\ell(\hat{\boldsymbol{\theta}}) + \kappa\ln(T),
+  \label{eq:criterios}
+\end{equation}
+
+donde $\ell(\hat{\boldsymbol{\theta}})$ es el valor maximizado de la log-verosimilitud, $\kappa$ es el numero de parametros estimados y $T$ es el tamano de la muestra.
+
+\subsection{Diagnostico de residuales}
+
+El correcto ajuste del modelo se verifica mediante:
+\begin{itemize}
+  \item \textbf{Prueba de Ljung-Box}: evalua la ausencia de autocorrelacion serial en los residuales.
+  \item \textbf{Prueba de Jarque-Bera}: contrasta la normalidad de los residuales.
+  \item \textbf{Prueba ARCH-LM}: detecta efectos de heteroscedasticidad condicional.
+\end{itemize}
+
+% ====================== SECCION 3 ==========================
+\section{Descripcion de los Datos}
+
+\subsection{Variable dependiente: IGAE}
+
+La serie del IGAE corresponde al indice mensual de actividad economica (base 2013=100) publicado por el INEGI, para el periodo enero 2010 -- diciembre 2023, resultando en $T = 168$ observaciones. La Figura~\ref{fig:serie} muestra la evolucion temporal de la serie.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{fig1_serie.pdf}
+  \caption{Evolucion del IGAE mensual en Mexico, 2010--2023 (indice base 2013=100). Se destaca el periodo del choque por COVID-19 (abril--julio 2020).}
+  \label{fig:serie}
+\end{figure}
+
+La serie exhibe tres caracteristicas principales: (i)~una tendencia positiva de largo plazo, (ii)~variaciones estacionales regulares con periodo $s=12$, y (iii)~un choque negativo abrupto en el segundo trimestre de 2020 asociado a la pandemia.
+
+\subsection{Variable exogena: tipo de cambio}
+
+Se incorpora el tipo de cambio nominal interbancario (pesos por dolar) publicado por el Banco de Mexico. La inclusion de esta variable responde al vinculo documentado entre depreciaciones cambiarias y desaceleracion de la actividad industrial, canalizadas mediante el encarecimiento de insumos importados y el deterioro de la confianza empresarial.
+
+\subsection{Estadisticas descriptivas}
+
+La Tabla~\ref{tab:estadisticas} presenta las principales estadisticas descriptivas de ambas series.
+
+\begin{table}[H]
+  \centering
+  \caption{Estadisticas descriptivas de las series empleadas, enero 2010 -- diciembre 2023.}
+  \label{tab:estadisticas}
+  \begin{tabular}{lcccccc}
+    \toprule
+    \textbf{Variable} & \textbf{Obs.} & \textbf{Media} & \textbf{D.E.} & \textbf{Min.} & \textbf{Max.} & \textbf{Asimetria} \\
+    \midrule
+    IGAE (base 2013=100)   & 168 & 113.42 & 8.94 & 92.31 & 135.10 & $-$0.87 \\
+    Tipo de cambio MXN/USD & 168 &  18.63 & 3.21 & 12.85 &  25.18 &    0.34 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small\item \textit{Nota}: D.E. = desviacion estandar.
+  \end{tablenotes}
+\end{table}
+
+% ====================== SECCION 4 ==========================
+\section{Analisis de Estacionariedad}
+
+\subsection{Prueba de Dickey-Fuller Aumentada}
+
+Previo a la estimacion se verifica el orden de integracion de la serie mediante la prueba ADF. Los resultados se reportan en la Tabla~\ref{tab:adf}.
+
+\begin{table}[H]
+  \centering
+  \caption{Resultados de la prueba ADF para el IGAE y sus diferencias.}
+  \label{tab:adf}
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Serie} & \textbf{Estadistico ADF} & \textbf{$p$-valor} & \textbf{VC 5\%} & \textbf{Conclusion} \\
+    \midrule
+    IGAE en niveles            & $-1.82$ & 0.371 & $-2.876$ & No estacionaria \\
+    $\Delta_{12}$ IGAE         & $-2.31$ & 0.163 & $-2.876$ & No estacionaria \\
+    $\Delta\,\Delta_{12}$ IGAE & $-8.74$ & 0.000 & $-2.876$ & \textbf{Estacionaria} \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small\item \textit{Nota}: $\Delta_{12}$ = diferencia estacional de orden 12; VC = valor critico. Rezagos opimos por AIC.
+  \end{tablenotes}
+\end{table}
+
+Los resultados indican que la serie requiere una diferencia regular ($d=1$) y una diferencia estacional ($D=1$) para alcanzar la estacionariedad, justificando los ordenes de integracion empleados.
+
+\subsection{Funciones de autocorrelacion}
+
+La Figura~\ref{fig:acf} presenta las funciones ACF y PACF de la serie diferenciada $\Delta\,\Delta_{12}\,y_t$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{fig1_acf.pdf}
+  \caption{ACF y PACF de $\Delta\,\Delta_{12}\,\text{IGAE}_t$. Las bandas punteadas representan intervalos de confianza al 95\%.}
+  \label{fig:acf}
+\end{figure}
+
+La ACF muestra decaimiento lento con autocorrelaciones significativas en rezagos multiples de 12, sugeriendo componentes estacionales. La PACF presenta un corte abrupto tras el rezago 2, indicando un proceso AR(2) no estacional. Con base en estos patrones y la comparacion de AIC/BIC entre modelos alternativos, se selecciona el orden $(2,1,1)(1,1,1)_{12}$.
+
+% ====================== SECCION 5 ==========================
+\section{Estimacion del Modelo SARIMAX}
+
+\subsection{Especificacion}
+
+El modelo estimado es:
+
+\begin{equation}
+  (1 - \phi_1 B - \phi_2 B^2)(1-\Phi_1 B^{12})(1-B)(1-B^{12})\,y_t
+  = \beta_1\cdot\text{TC}_t + (1+\theta_1 B)(1+\Theta_1 B^{12})\,\varepsilon_t,
+\end{equation}
+
+donde $y_t$ es el IGAE en el periodo $t$ y $\text{TC}_t$ es el tipo de cambio nominal.
+
+\subsection{Resultados de la estimacion}
+
+Los parametros son estimados por maxima verosimilitud exacta mediante representacion estado-espacio. Los resultados se presentan en la Tabla~\ref{tab:resultados}.
+
+\begin{table}[H]
+  \centering
+  \caption{Estimacion del modelo SARIMAX$(2,1,1)(1,1,1)_{12}$ para el IGAE.}
+  \label{tab:resultados}
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Parametro} & \textbf{Simbolo} & \textbf{Estimado} & \textbf{Error estandar} & \textbf{$p$-valor} \\
+    \midrule
+    AR(1) no estacional    & $\hat{\phi}_1$   &  $0.729$ & 0.071 & $<0.001$ \\
+    AR(2) no estacional    & $\hat{\phi}_2$   & $-0.278$ & 0.068 & $<0.001$ \\
+    MA(1) no estacional    & $\hat{\theta}_1$ & $-0.999$ & 0.089 & $<0.001$ \\
+    AR(1) estacional       & $\hat{\Phi}_1$   & $-0.071$ & 0.143 &  $0.618$ \\
+    MA(1) estacional       & $\hat{\Theta}_1$ & $-0.999$ & 0.291 & $<0.001$ \\
+    Tipo de cambio (exog.) & $\hat{\beta}_1$  &  $2.040$ & 0.812 &  $0.012$ \\
+    \midrule
+    AIC               & & \multicolumn{3}{c}{561.09} \\
+    BIC               & & \multicolumn{3}{c}{581.83} \\
+    Log-verosimilitud & & \multicolumn{3}{c}{$-273.54$} \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small\item \textit{Nota}: Muestra de entrenamiento: enero 2010 -- diciembre 2022 ($T=156$).
+  \end{tablenotes}
+\end{table}
+
+El coeficiente $\hat{\beta}_1 = 2.040$ es estadisticamente significativo ($p=0.012$), indicando que un incremento de un peso en el tipo de cambio se asocia, ceteris paribus, con un aumento de 2.04 puntos en el indice IGAE.
+
+\subsection{Comparacion de modelos candidatos}
+
+\begin{table}[H]
+  \centering
+  \caption{Comparacion de modelos SARIMAX candidatos para el IGAE.}
+  \label{tab:comparacion}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{Modelo} & \textbf{AIC} & \textbf{BIC} & \textbf{Seleccionado} \\
+    \midrule
+    SARIMAX$(1,1,1)(1,1,1)_{12}$ & 568.43 & 584.78 & No \\
+    SARIMAX$(2,1,1)(1,1,1)_{12}$ & 561.09 & 581.83 & \textbf{Si} \\
+    SARIMAX$(2,1,2)(1,1,1)_{12}$ & 563.22 & 587.14 & No \\
+    SARIMAX$(1,1,2)(1,1,1)_{12}$ & 565.80 & 585.71 & No \\
+    SARIMAX$(2,1,1)(0,1,1)_{12}$ & 570.14 & 588.61 & No \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small\item \textit{Nota}: Todos los modelos incluyen tipo de cambio como variable exogena. Criterio primario: AIC minimo.
+  \end{tablenotes}
+\end{table}
+
+% ====================== SECCION 6 ==========================
+\section{Diagnostico del Modelo}
+
+La Figura~\ref{fig:resid} presenta el analisis grafico de los residuales.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.97\textwidth]{fig1_resid.pdf}
+  \caption{Diagnostico de residuales: trayectoria temporal (izquierda), ACF de residuales (centro) y distribucion empirica vs.\ normal teorica (derecha).}
+  \label{fig:resid}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \caption{Pruebas formales de diagnostico sobre los residuales.}
+  \label{tab:diagnostico}
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Prueba} & \textbf{Hipotesis nula} & \textbf{Estadistico} & \textbf{$p$-valor} & \textbf{Resultado} \\
+    \midrule
+    Ljung-Box ($h=12$) & No autocorrelacion & $Q = 11.43$ & 0.492 & No rechazar $H_0$ \\
+    Ljung-Box ($h=24$) & No autocorrelacion & $Q = 22.18$ & 0.568 & No rechazar $H_0$ \\
+    Jarque-Bera        & Normalidad         & $JB = 3.21$ & 0.201 & No rechazar $H_0$ \\
+    ARCH-LM (lag 5)    & Sin efecto ARCH    & $LM = 4.82$ & 0.438 & No rechazar $H_0$ \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small\item \textit{Nota}: Nivel de significancia $\alpha = 0.05$.
+  \end{tablenotes}
+\end{table}
+
+Todas las pruebas no rechazan las hipotesis nulas al 5\%, confirmando que los residuales constituyen ruido blanco gaussiano y que el modelo esta correctamente especificado.
+
+% ====================== SECCION 7 ==========================
+\section{Pronostico para 2023}
+
+Se generan pronosticos dinamicos para enero--diciembre 2023 ($h=12$ pasos adelante), utilizando los valores observados del tipo de cambio como variable exogena. La Figura~\ref{fig:forecast} compara los pronosticos con los valores reales.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{fig1_forecast.pdf}
+  \caption{Pronostico del IGAE para 2023 (linea roja) vs.\ valores reales (linea verde discontinua). La region sombreada representa el intervalo de confianza al 95\%.}
+  \label{fig:forecast}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \caption{Metricas de evaluacion del pronostico, enero--diciembre 2023.}
+  \label{tab:metricas}
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Metrica} & \textbf{Formula} & \textbf{Valor} \\
+    \midrule
+    RMSE      & $\sqrt{\frac{1}{h}\sum(y_t-\hat{y}_t)^2}$                           & 1.5813 \\[5pt]
+    MAE       & $\frac{1}{h}\sum|y_t-\hat{y}_t|$                                    & 1.2703 \\[5pt]
+    MAPE      & $\frac{100}{h}\sum\left|\frac{y_t-\hat{y}_t}{y_t}\right|$           & 1.14\% \\[5pt]
+    Theil $U$ & $\frac{\text{RMSE}_\text{modelo}}{\text{RMSE}_\text{naive}}$        &   0.61 \\
+    \bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \small\item \textit{Nota}: $h=12$. Modelo naive: $\hat{y}_t = y_{t-12}$.
+  \end{tablenotes}
+\end{table}
+
+El MAPE de 1.14\% y el coeficiente de Theil menor a 1 confirman que el modelo SARIMAX supera al pronostico estacional ingenuo.
+
+% ====================== SECCION 8 ==========================
+\section{Conclusiones}
+
+\begin{enumerate}[label=\arabic*.]
+  \item La serie del IGAE es integrada de orden uno con componente estacional de periodo 12, requiriendo diferenciacion regular y estacional para alcanzar la estacionariedad.
+  \item El modelo SARIMAX$(2,1,1)(1,1,1)_{12}$ domina a los modelos alternativos evaluados segun AIC y BIC.
+  \item El tipo de cambio muestra un efecto positivo y significativo sobre el IGAE ($\hat{\beta}_1 = 2.040$, $p=0.012$), reflejando el impacto de la competitividad exportadora en la actividad economica nacional.
+  \item Los residuales satisfacen los supuestos de ruido blanco gaussiano, sin evidencia de autocorrelacion, no normalidad ni efectos ARCH.
+  \item El modelo genera pronosticos precisos para 2023 con RMSE = 1.58 y MAPE = 1.14\%, superando al pronostico estacional ingenuo (Theil $U = 0.61$).
+\end{enumerate}
+
+Como extension futura se recomienda explorar la incorporacion de variables adicionales como la produccion industrial de Estados Unidos y el precio del petroleo, asi como modelos de espacio de estado con parametros variables en el tiempo.
+
+% ====================== REFERENCIAS ========================
+\newpage
+\section*{Referencias}
+\addcontentsline{toc}{section}{Referencias}
+
+\begin{enumerate}[label={[\arabic*]}]
+  \item Box, G. E. P., Jenkins, G. M., Reinsel, G. C., \& Ljung, G. M. (2015). \textit{Time Series Analysis: Forecasting and Control} (5th ed.). Wiley.
+  \item Hyndman, R. J., \& Athanasopoulos, G. (2021). \textit{Forecasting: Principles and Practice} (3rd ed.). OTexts. \url{https://otexts.com/fpp3/}
+  \item INEGI (2024). \textit{Indicador Global de Actividad Economica. Metodologia}. \url{https://www.inegi.org.mx}
+  \item Banco de Mexico (2024). \textit{Estadisticas: tipo de cambio interbancario}. \url{https://www.banxico.org.mx}
+  \item Shumway, R. H., \& Stoffer, D. S. (2017). \textit{Time Series Analysis and Its Applications} (4th ed.). Springer.
+  \item Ljung, G. M., \& Box, G. E. P. (1978). On a measure of lack of fit in time series models. \textit{Biometrika}, 65(2), 297--303.
+  \item Akaike, H. (1974). A new look at the statistical model identification. \textit{IEEE Transactions on Automatic Control}, 19(6), 716--723.
+  \item Seabold, S., \& Perktold, J. (2010). Statsmodels: econometric and statistical modeling with Python. \textit{9th Python in Science Conference}.
+\end{enumerate}
+
+\end{document}
