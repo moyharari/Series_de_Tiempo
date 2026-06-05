@@ -1,0 +1,274 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{color,pxfonts,fix-cm}
+\usepackage{latexsym}
+\usepackage[mathletters]{ucs}
+\usepackage[Helvetica,Lora-Regular,Lora-Italic,T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{pict2e}
+\usepackage{wasysym}
+\usepackage[english]{babel}
+\usepackage{tikz}
+\pagestyle{empty}
+\usepackage[margin=0in,paperwidth=595pt,paperheight=841pt]{geometry}
+\begin{document}
+\definecolor{color_29791}{rgb}{0,0,0}
+\definecolor{color_226889}{rgb}{0.8,0.133333,0}
+\begin{tikzpicture}[overlay]\path(0pt,0pt);\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-40.13391){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Moises Harari}
+\put(47.3622,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Sección 1 — Procesos estacionarios y fundamentos}
+\end{picture}
+\begin{tikzpicture}[overlay]
+\path(0pt,0pt);
+\draw[color_29791,line width=0.7pt]
+(47.3622pt, -64.73389pt) -- (294.0177pt, -64.73389pt)
+;
+\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-89.63391){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}1.1}
+\put(47.3622,-106.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-106.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Estacionariedad débil vs. estricta}
+\put(70.03937,-122.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Débil: E[Yt] = μ ?t  y  Cov(Yt, Yt-k) = ?(k) depende sólo de k.}
+\put(70.03937,-139.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Estricta: distribución conjunta invariante a traslaciones en t.}
+\put(70.03937,-155.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Ejemplo: Yt = cos(?t + U), U ~ Unif(0,2π)}
+\put(70.03937,-172.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? E[Yt]=0, autocov. depende sólo de k  ?  débilmente estacionario.}
+\put(70.03937,-188.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Distribución marginal cambia con t  ?  NO estrictamente estacionario.}
+\put(47.3622,-211.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-211.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}|?(k)| ≤ 1  y  ?(k) = ?(−k)}
+\put(70.03937,-228.2339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cauchy-Schwarz: Cov(Yt,Yt-k)² ≤ Var(Yt)·Var(Yt-k) = ?(0)²}
+\put(70.03937,-244.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  ?  |?(k)/?(0)| ≤ 1  ?  |?(k)| ≤ 1   ?}
+\put(70.03937,-261.2339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Simetría: ?(−k) = Cov(Yt,Yt+k)/?(0) = Cov(Ys,Ys-k)/?(0) = ?(k)  ?}
+\put(47.3622,-284.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-284.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}AR(1): Yt = 0.6Yt-1 + ?t,  ?t ~ WN(0,?²)}
+\put(70.03937,-300.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Var(Yt): ?(0) = 0.36?(0) + ?²  ?  ?(0) = ?²/0.64}
+\put(70.03937,-317.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cov(Yt,Yt-1) = ?(1) = 0.6·?²/0.64}
+\put(70.03937,-333.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Recursión: ?(k) = 0.6·?(k−1)  ?  ?(k) = 0.6?  ?k ≥ 0   ?}
+\put(47.3622,-356.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-356.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Patrones ACF / PACF:}
+\put(70.03937,-373.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}AR(1) ?>0: ACF decae exp. ?(k)=??;  PACF se corta en lag 1.}
+\put(70.03937,-389.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}MA(1) ?>0: ACF se corta en lag 1;  PACF decae exponencialmente.}
+\put(70.03937,-406.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Ruido blanco: ACF ≈ PACF ≈ 0 ?k ≥ 1  (banda ±1.96/√T)}
+\put(70.03937,-422.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? lag corte PACF da p;  lag corte ACF da q.}
+\put(47.3622,-449.3339){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}1.2}
+\put(47.3622,-465.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-465.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}AR(2): ?(z) = 1 − 1.2z + 0.32z² = 0}
+\put(70.03937,-482.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}z = [1.2 ± √(1.44−1.28)] / 0.64 = [1.2 ± 0.4] / 0.64}
+\put(70.03937,-498.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}z? = 2.5  ,  z? = 1.25  ?  ambas fuera círculo unitario  ?  estacionario ?}
+\put(47.3622,-521.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-521.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}MA(2): Yt = ?t + 0.5?t-1 − 0.3?t-2}
+\put(70.03937,-538.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Var(Yt) = ?²(1 + 0.25 + 0.09) = 1.34?²}
+\put(70.03937,-554.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cov(Yt,Yt-1) = ?²(0.5 − 0.15) = 0.35?²}
+\put(70.03937,-571.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cov(Yt,Yt-2) = −0.3?²}
+\put(70.03937,-587.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cov(Yt,Yt-k) = 0  para k ≥ 3   ?}
+\end{picture}
+\newpage
+\begin{tikzpicture}[overlay]\path(0pt,0pt);\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-40.13391){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Moises Harari}
+\put(47.3622,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Invertibilidad MA(q): raíces de ?(z) fuera del círculo unitario.}
+\put(70.03937,-79.73389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Garantiza representación AR(∞), necesaria para pronósticos óptimos.}
+\put(47.3622,-102.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-102.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}MA(∞) del AR(1) con |?|<1:}
+\put(70.03937,-119.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Iterando: Yt = ?Yt-1+?t = ?²Yt-2+??t-1+?t = …}
+\put(70.03937,-135.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Como |?|<1,  ??Yt-j ? 0  ?  Yt = ?∞j=0 ???t-j   ?}
+\put(47.3622,-162.2339){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}1.3}
+\put(47.3622,-178.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-178.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Caminata aleatoria Yt = Yt-1 + ?t:}
+\put(70.03937,-195.2339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Yt = Y0 + ?ts=1 ?s  ?  Var(Yt) = t?² ? ∞  ?  NO estacionario}
+\put(70.03937,-211.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cov(Yt,Ys) = min(s,t)?²  (depende de ambos índices)   ?}
+\put(47.3622,-234.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-234.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ΔYt = Yt−Yt-1 = (Yt-1+?t)−Yt-1 = ?t ~ WN(0,?²)   ?  ?  I(1)}
+\put(47.3622,-257.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-257.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Distribución no estándar bajo H? del ADF:}
+\put(70.03937,-274.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}H?: ?=0, Yt es caminata aleatoria ? Yt-1 no estacionario (Var?∞).}
+\put(70.03937,-290.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}OLS converge a tasa T (no √T); distribución límite = funcional}
+\put(70.03937,-307.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}del movimiento browniano  ?  valores críticos Dickey-Fuller tabulados.}
+\put(47.3622,-330.5339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-330.5339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Log-precios I(1) vs. log-retornos I(0):}
+\put(70.03937,-347.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}pt = ln Pt  es I(1): varianza creciente, no modelable con ARMA.}
+\put(70.03937,-363.5339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}rt = Δpt  es I(0): estacionario, varianza finita ? modelable con ARMA.}
+\put(70.03937,-380.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Siempre diferenciar antes de ajustar; acumular pronósticos de rt+h para Pt+h.}
+\put(47.3622,-406.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Sección 2 — Modelos ARIMA(p,d,q)}
+\end{picture}
+\begin{tikzpicture}[overlay]
+\path(0pt,0pt);
+\draw[color_29791,line width=0.7pt]
+(47.3622pt, -407.9339pt) -- (215.9817pt, -407.9339pt)
+;
+\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-427.8839){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}2.1}
+\put(47.3622,-444.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-444.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Identificación por ACF / PACF:}
+\put(70.03937,-460.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(i)  ACF decae exp., PACF se corta en lag 2  ?  AR(2)}
+\put(70.03937,-477.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(ii) ACF se corta en lag 1, PACF decae exp.  ?  MA(1)}
+\put(70.03937,-493.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(iii) Ambas decaen sin corte  ?  ARMA(p,q) con p,q ≥ 1}
+\put(70.03937,-510.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(iv) Pico en ACF sólo en lag 1  ?  MA(1)}
+\put(47.3622,-533.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-533.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}AIC = −2 ln L̂ + 2k   ;   BIC = −2 ln L̂ + k ln n}
+\put(70.03937,-549.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}BIC penaliza más para n > 7  (cuando ln n > 2).}
+\put(47.3622,-573.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-573.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Box-Jenkins:}
+\put(70.03937,-589.5839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}1. Identificación: graficar Yt, ACF, PACF; ADF; diferenciar; leer p,q.}
+\put(70.03937,-606.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}2. Estimación: MV condicional ? ?̂, ?̂, ?̂².}
+\put(70.03937,-622.5839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}3. Diagnóstico: ACF/PACF residuos + Ljung-Box. Si falla ? revisar.}
+\put(47.3622,-645.6839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-645.6839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Ljung-Box:  Q = n(n+2) ?hk=1 ?̂²(k)/(n−k),  h=min(10,n/5)}
+\put(70.03937,-662.1839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}H?: residuos = WN  ?  Q ~ ?²(h−p−q)}
+\put(70.03937,-678.6839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Q > ?²crit  ?  rechazar H?  ?  modelo mal especificado.}
+\end{picture}
+\newpage
+\begin{tikzpicture}[overlay]\path(0pt,0pt);\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-40.13391){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Moises Harari}
+\put(47.3622,-63.23389){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}2.2}
+\put(64.5422,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ARIMA(1,1,1) para log-precios de una acción}
+\put(47.3622,-79.73389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-79.73389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(1−??B)(1−B)yt = (1+??B)?t  ;  rt = Δyt}
+\put(70.03937,-96.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(1−??B)rt = (1+??B)?t  ?  rt = ??rt-1 + ?t + ???t-1   ? ARMA(1,1)  ?}
+\put(47.3622,-119.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-119.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}r̂T+1|T = E[rT+1|FT] = ?̂?rT + ?̂??T   (E[?T+1|FT]=0)}
+\put(70.03937,-135.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Con ?̂?=0.15, ?̂?=−0.08:   r̂T+1|T = 0.15rT − 0.08?T}
+\put(47.3622,-158.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-158.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC 95\% para rT+1:   r̂T+1|T ± 1.96?̂}
+\put(70.03937,-175.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}PT+1 = PT · exp(rT+1)}
+\put(70.03937,-191.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC para PT+1: [ PT·exp(r̂T+1|T − 1.96?̂) ,  PT·exp(r̂T+1|T + 1.96?̂) ]}
+\put(47.3622,-215.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-215.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}¿Captura asimetría de volatilidad?  No.}
+\put(70.03937,-231.5339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ARIMA asume ?² constante y choques simétricos.}
+\put(70.03937,-248.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Para efecto apalancamiento se requiere EGARCH o GJR-GARCH.}
+\put(47.3622,-274.4339){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}2.3}
+\put(64.7722,-274.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ARIMA(2,1,0): ??=0.5, ??=−0.2, ?²=1,  YT=100, WT=1.2, WT-1=0.8}
+\put(47.3622,-290.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-290.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Wt = ΔYt:   Wt = 0.5Wt-1 − 0.2Wt-2 + ?t}
+\put(47.3622,-314.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-314.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Pronósticos:}
+\put(70.03937,-330.5339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ŴT+1|T = 0.5(1.2) − 0.2(0.8) = 0.60 − 0.16 = 0.44}
+\put(70.03937,-347.0339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ŴT+2|T = 0.5(0.44) − 0.2(1.2) = 0.22 − 0.24 = −0.02}
+\put(47.3622,-370.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-370.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Coeficientes ? y ECM:}
+\put(70.03937,-386.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}??=1 ,  ??=0.5 ,  ?? = 0.5(0.5)+(−0.2)(1) = 0.05}
+\put(70.03937,-403.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}MSE? = ?²·??² = 1}
+\put(70.03937,-419.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}MSE? = ?²(??²+??²) = 1 + 0.25 = 1.25}
+\put(47.3622,-442.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-442.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC al 95\%:}
+\put(70.03937,-459.2339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}WT+1: 0.44 ± 1.96  =  [−1.52 ,  2.40]}
+\put(70.03937,-475.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}WT+2: −0.02 ± 1.96√1.25  =  −0.02 ± 2.19  =  [−2.21 ,  2.17]}
+\put(70.03937,-492.2339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ŶT+1 = 100 + 0.44 = 100.44  ;  IC Y: [98.48 ,  102.40]}
+\put(70.03937,-508.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ŶT+2 = 100.42              ;  IC Y: [98.21 ,  102.62]}
+\put(47.3622,-535.1339){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}2.4}
+\put(64.5997,-535.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Cointegración y spreads estadísticos}
+\put(47.3622,-551.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-551.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Teorema de Granger — representación ECM:}
+\put(70.03937,-568.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ΔYt = ?(Yt-1−?Xt-1) + ??j ΔYt-j + ??j ΔXt-j + ?t}
+\put(70.03937,-584.6339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}?(Yt-1−?Xt-1): fuerza restauradora. Si spread>0 y ?<0}
+\put(70.03937,-601.1339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  ? jala ΔYt hacia abajo ? retorno al equilibrio de largo plazo.}
+\end{picture}
+\newpage
+\begin{tikzpicture}[overlay]\path(0pt,0pt);\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-40.13391){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Moises Harari}
+\put(47.3622,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Engle-Granger:}
+\put(70.03937,-79.73389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}1. MCO en Yt = ? + ?Xt + ût  ?  obtener ?̂}
+\put(70.03937,-96.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}2. ADF sobre residuos ût.  Si I(0)  ?  cointegración confirmada.}
+\put(70.03937,-112.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}   (Valores críticos Engle-Granger, distintos al ADF estándar)}
+\put(47.3622,-135.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-135.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Spread AR(1):  Zt = μ + ?Zt-1 + ?t ,  |?|<1}
+\put(70.03937,-152.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}E[Zt] = μ/(1−?)   ;   Var(Zt) = ?²/(1−?²)   ;   E[?μ] = 1/(1−?)}
+\put(47.3622,-175.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-175.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}?=0.95, μ=0, ?=0.01:}
+\put(70.03937,-191.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}E[Zt] = 0   ;   ?Z = 0.01/√0.0975 ≈ 0.032   ;   E[??] = 20 períodos}
+\put(70.03937,-208.4339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Abrir posición cuando |Zt| > 2?Z ≈ 0.064}
+\put(70.03937,-224.9339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}   Zt >> 0: vender Y, comprar X.   Zt << 0: comprar Y, vender X.}
+\put(47.3622,-251.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Sección 3 — Modelos SARIMA y estacionalidad}
+\end{picture}
+\begin{tikzpicture}[overlay]
+\path(0pt,0pt);
+\draw[color_29791,line width=0.7pt]
+(47.3622pt, -252.8339pt) -- (273.1857pt, -252.8339pt)
+;
+\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-272.7839){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}3.1}
+\put(47.3622,-289.2839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-289.2839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}SARIMA(1,1,1)(1,1,1)?? expandido:}
+\put(70.03937,-305.7839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(1−??B¹²)(1−??B)(1−B¹²)(1−B)Yt = (1+??B¹²)(1+??B)?t}
+\put(47.3622,-328.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-328.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}???(??Yt):}
+\put(70.03937,-345.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}??Yt = Yt − Yt-1}
+\put(70.03937,-361.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}???(??Yt) = (Yt−Yt-1) − (Yt-12−Yt-13)}
+\put(70.03937,-378.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}           = Yt − Yt-1 − Yt-12 + Yt-13   ?}
+\put(70.03937,-394.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Involucra: Yt , Yt-1 , Yt-12 , Yt-13  ?}
+\put(47.3622,-417.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-417.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Patrones ACF con / sin ???:}
+\put(70.03937,-434.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Antes: picos grandes en k=12,24,36,… ? estacionalidad persistente.}
+\put(70.03937,-450.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Después: picos en múltiplos de 12 se reducen drásticamente.}
+\put(70.03937,-467.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Si persisten ? D=2 (raro en la práctica).}
+\put(47.3622,-490.5839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-490.5839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(d,D) para ventas mensuales: típicamente d=1, D=1.}
+\put(70.03937,-507.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Modelo Airline de Box-Jenkins (1970). Parsimoniosa y muy usada.}
+\put(47.3622,-533.4839){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}3.2}
+\put(64.7722,-533.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Modelo Airline  SARIMA(0,1,1)(0,1,1)??}
+\put(47.3622,-549.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-549.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Lado izquierdo:}
+\put(70.03937,-566.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(1−B)(1−B¹²)Vt = (1−B)(Vt − Vt-12)}
+\put(70.03937,-582.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  = Vt − Vt-1 − Vt-12 + Vt-13   ?}
+\put(47.3622,-606.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-606.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Lado derecho:}
+\put(70.03937,-622.5839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(1+??B)(1+??B¹²)?t = ?t + ???t-1 + ???t-12 + ??t-13}
+\put(70.03937,-639.0839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Ecuación completa:}
+\put(70.03937,-655.5839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  Vt = Vt-1 + Vt-12 − Vt-13 + ?t + ???t-1 + ???t-12 + ??t-13}
+\end{picture}
+\newpage
+\begin{tikzpicture}[overlay]\path(0pt,0pt);\end{tikzpicture}
+\begin{picture}(-5,0)(2.5,0)
+\put(47.3622,-40.13391){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}Moises Harari}
+\put(47.3622,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-63.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Pronóstico V̂??:}
+\put(70.03937,-79.73389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}?̂?=−0.4 ,  ?̂?=−0.6 ,  ?̂??̂?=0.24}
+\put(70.03937,-96.23389){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}V̂?? = V?? + V?? − V?? + ?̂??̂?? + ?̂??̂??}
+\put(70.03937,-112.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}     = 50 + 40 − 35 + (−0.4)(2) + (−0.6)(1)}
+\put(70.03937,-129.2339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}     = 55 − 0.8 − 0.6 = 53.6 M MXN}
+\put(47.3622,-152.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-152.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Intervalos de predicción:}
+\put(70.03937,-168.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}V?? (h=1):   53.6 ± 1.96?̂}
+\put(70.03937,-185.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}V?? (h=13):  IC más amplio porque:}
+\put(70.03937,-201.8339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  MSEh = ?² ?h-1j=0 ?j²  crece con h ? mayor incertidumbre acumulada.}
+\put(70.03937,-218.3339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Cada periodo extra agrega ?t+j no observado cuya varianza se suma.}
+\put(47.3622,-244.7339){\fontsize{11.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_226889}3.3}
+\put(65.0022,-244.7339){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}SARIMA para CETES 28d semanal,  ciclo trimestral s=13}
+\put(47.3622,-266.1839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(a)}
+\put(61.1852,-266.1839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Modelo propuesto:  SARIMA(1,1,0)(1,1,0)??}
+\put(70.03937,-282.6839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}(1−??B)(1−??B¹³)(1−B¹³)(1−B)Yt = ?t}
+\put(70.03937,-299.1839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Justificación:}
+\put(70.03937,-315.6839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  • PACF pico en lag 1  ?  AR(1) no estacional}
+\put(70.03937,-332.1839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  • PACF pico en lag 13, decae en 26,39  ?  AR(1) estacional}
+\put(70.03937,-348.6839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  • d=1 por raíz unitaria (ADF)}
+\put(70.03937,-365.1839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  • D=1 por picos persistentes en ACF en k=13, 26, 39}
+\put(47.3622,-388.2839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(b)}
+\put(61.8782,-388.2839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Pronóstico 4 semanas e intervalos:}
+\put(70.03937,-404.7839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ŶT+h|T  por recurrencia del modelo para h=1,2,3,4}
+\put(70.03937,-421.2839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC 80\%:  ŶT+h ± 1.28√MSEh}
+\put(70.03937,-437.7839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC 95\%:  ŶT+h ± 1.96√MSEh}
+\put(70.03937,-454.2839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  donde MSEh = ?̂² ?h-1j=0 ?j²  (coefs. de la rep. MA(∞))}
+\put(47.3622,-477.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(c)}
+\put(61.3532,-477.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Evaluación ECMP vs. ARIMA(1,1,0) sin estacionalidad:}
+\put(70.03937,-493.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ECMPSARIMA = (1/26) ? (Yt − Ŷt)²  sobre últimas 26 semanas}
+\put(70.03937,-510.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}ARIMA(1,1,0) tendrá mayor ECMP: no captura fluctuaciones de 13 semanas.}
+\put(70.03937,-526.8839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Residuos mostrarán autocorrelación en lags 13,26 ? Ljung-Box falla.}
+\put(70.03937,-543.3839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}? Seleccionar modelo con menor ECMP out-of-sample.}
+\put(47.3622,-566.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{n}\selectfont\color{color_29791}(d)}
+\put(62.0462,-566.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Regla de decisión y riesgo:}
+\put(70.03937,-582.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC 95\% de YT+1 íntegramente sobre tasa actual}
+\put(70.03937,-599.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  ? comprar futuros CETES (se anticipa alza de tasa)}
+\put(70.03937,-615.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC íntegramente bajo tasa actual  ?  vender futuros}
+\put(70.03937,-632.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}IC cruza tasa actual  ?  señal ambigua, no operar}
+\put(70.03937,-648.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}Riesgos:}
+\put(70.03937,-665.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  1. SARIMA asume linealidad ? falla ante cambios abruptos de política.}
+\put(70.03937,-681.9839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  2. Parámetros estimados con error ? IC subestima incertidumbre real.}
+\put(70.03937,-698.4839){\fontsize{10.5}{1}\usefont{T1}{ptm}{m}{it}\selectfont\color{color_29791}  3. Mitigación: reestimar modelo periódicamente y monitorear residuos.}
+\end{picture}
+\end{document}

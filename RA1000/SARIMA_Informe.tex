@@ -1,0 +1,443 @@
+\documentclass[12pt,letterpaper]{article}
+
+% ── Paquetes ──────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{microtype}
+
+% ── Colores ───────────────────────────────────────────────────────────────────
+\definecolor{navy}{HTML}{1a3a5c}
+\definecolor{blue2}{HTML}{2d6a9f}
+\definecolor{teal}{HTML}{145a32}
+\definecolor{codebg}{HTML}{f4f8ff}
+\definecolor{codeborder}{HTML}{2d6a9f}
+\definecolor{rowA}{HTML}{eaf2fb}
+\definecolor{rowG}{HTML}{eafaf1}
+\definecolor{rowP}{HTML}{f5eef8}
+\definecolor{comment}{HTML}{5c6370}
+\definecolor{keyword}{HTML}{c0392b}
+\definecolor{string}{HTML}{145a32}
+
+% ── Tipografía secciones ──────────────────────────────────────────────────────
+\titleformat{\section}{\large\bfseries\color{navy}}{}{0em}{\thesection.\quad}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{blue2}}{}{0em}{\thesubsection.\quad}
+
+% ── Encabezado/pie ────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Modelos (S)ARIMA --- Series de Tiempo para Finanzas}
+\fancyhead[R]{\small\color{navy}Dr.\ César Galindo}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ── Listings (código Python) ──────────────────────────────────────────────────
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{codebg},
+  frame=single,
+  framerule=0.6pt,
+  rulecolor=\color{codeborder},
+  keywordstyle=\color{keyword}\bfseries,
+  commentstyle=\color{comment}\itshape,
+  stringstyle=\color{string},
+  showstringspaces=false,
+  breaklines=true,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=8pt,
+  xleftmargin=1.5em,
+  xrightmargin=0.5em,
+  aboveskip=8pt,
+  belowskip=8pt,
+}
+
+% ── Tabla coloreada (macro) ───────────────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── Portada ───────────────────────────────────────────────────────────────────
+\begin{center}
+  {\LARGE\bfseries\color{navy} Modelos (S)ARIMA en Series de Tiempo Financieras}\\[6pt]
+  {\color{blue2}\rule{\linewidth}{1.5pt}}\\[4pt]
+  {\normalsize Forma general $\cdot$ Herramientas de identificación $\cdot$
+               Tres ejemplos aplicados con datos financieros}\\[4pt]
+  {\small Series de Tiempo para Finanzas --- Dr.\ César Galindo \quad|\quad Abril 2026}
+\end{center}
+
+\vspace{4pt}
+{\color{navy}\rule{\linewidth}{0.5pt}}
+\vspace{8pt}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Forma General del Modelo ARIMA}
+
+Un modelo \textbf{ARIMA$(p,\,d,\,q)$} (Autoregressive Integrated Moving Average)
+combina tres componentes:
+
+\vspace{4pt}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\rowcolor{navy}\textcolor{white}{\textbf{Componente}} &
+\textcolor{white}{\textbf{Parámetro}} &
+\textcolor{white}{\textbf{Descripción}} \\
+\midrule
+\rowcolor{rowA} AR --- Autorregresivo & $p$ & Número de rezagos de $y_t$ incluidos \\
+I  --- Integrado    & $d$ & Número de diferencias ordinarias para estacionariedad \\
+\rowcolor{rowA} MA --- Media Móvil & $q$ & Número de rezagos del error $\varepsilon_t$ incluidos \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Ecuación general (operador de rezago \texorpdfstring{$B$}{B})}
+
+El operador de rezago $B$ se define como $B^k y_t = y_{t-k}$.
+La forma compacta del ARIMA$(p,d,q)$ es:
+
+\[
+  \boxed{\phi_p(B)\,(1-B)^d\,y_t \;=\; \theta_q(B)\,\varepsilon_t}
+\]
+
+donde:
+\begin{align*}
+  \phi_p(B)   &= 1 - \phi_1 B - \phi_2 B^2 - \cdots - \phi_p B^p
+                \qquad\text{[polinomio AR]} \\
+  \theta_q(B) &= 1 + \theta_1 B + \theta_2 B^2 + \cdots + \theta_q B^q
+                \qquad\text{[polinomio MA]} \\
+  (1-B)^d     &= \text{operador de diferencia ordinaria de orden }d \\
+  \varepsilon_t &\overset{\text{iid}}{\sim}(0,\,\sigma^2)\qquad\text{[ruido blanco]}
+\end{align*}
+
+\subsection{Extensión estacional: SARIMA\texorpdfstring{$(p,d,q)(P,D,Q)_s$}{}}
+
+Cuando la serie exhibe estacionalidad de período $s$, se añade una capa multiplicativa:
+
+\[
+  \boxed{\Phi_P(B^s)\,\phi_p(B)\,(1-B^s)^D(1-B)^d\,y_t
+  \;=\;
+  \Theta_Q(B^s)\,\theta_q(B)\,\varepsilon_t}
+\]
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}L{1.5cm}L{3.5cm}L{5.5cm}@{}}
+\toprule
+\rowcolor{navy}\textcolor{white}{\textbf{Símbolo}} &
+\textcolor{white}{\textbf{Nombre}} &
+\textcolor{white}{\textbf{Efecto}} \\
+\midrule
+\rowcolor{rowA}$p,d,q$ & Órdenes no estacionales & Capturan dinámica de corto plazo \\
+$P,D,Q$ & Órdenes estacionales & Capturan ciclos repetitivos \\
+\rowcolor{rowA}$s$ & Período estacional & 12 mensual, 4 trimestral, 5 semanal \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Herramientas de Identificación y Diagnóstico}
+
+La metodología \textbf{Box-Jenkins} consta de cuatro etapas:
+identificación, estimación, diagnóstico y pronóstico.
+
+\vspace{4pt}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}L{1.5cm}L{2.4cm}L{2.0cm}L{4.0cm}@{}}
+\toprule
+\rowcolor{teal}\textcolor{white}{\textbf{Herramienta}} &
+\textcolor{white}{\textbf{Nombre completo}} &
+\textcolor{white}{\textbf{Uso}} &
+\textcolor{white}{\textbf{Regla de decisión}} \\
+\midrule
+\rowcolor{rowG} ACF  & Autocorrelación & Identificar $q$ & Corte abrupto en lag $q \Rightarrow$ MA$(q)$ \\
+PACF & Autocorr.\ Parcial & Identificar $p$ & Corte abrupto en lag $p \Rightarrow$ AR$(p)$ \\
+\rowcolor{rowG} ADF  & Dickey-Fuller & Estacionariedad & $H_0$: raíz unitaria; $p<0.05 \Rightarrow$ estacionaria \\
+AIC  & Criterio Akaike & Selección & $\widehat{\text{AIC}}=-2\ell+2k$; menor es mejor \\
+\rowcolor{rowG} BIC  & Criterio Bayesiano & Selección & $\widehat{\text{BIC}}=-2\ell+k\ln n$; más restrictivo \\
+Ljung-Box & Test Q Portmanteau & Diagnóstico & $H_0$: residuos ruido blanco; $p>0.05 \Rightarrow$ OK \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+
+\noindent\textbf{Criterios de información:}
+\[
+  \text{AIC} = -2\,\ell(\hat{\boldsymbol{\theta}}) + 2k \qquad
+  \text{BIC} = -2\,\ell(\hat{\boldsymbol{\theta}}) + k\ln n
+\]
+donde $\ell$ es la log-verosimilitud maximizada, $k$ el número de parámetros y $n$ las observaciones.
+
+\vspace{6pt}
+
+\noindent\textbf{Reglas de lectura ACF/PACF:}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}L{3.5cm}L{3.5cm}L{3.0cm}@{}}
+\toprule
+\textbf{Patrón ACF} & \textbf{Patrón PACF} & \textbf{Modelo} \\
+\midrule
+\rowcolor{rowA} Decae exponencial & Corte en lag $p$ & AR$(p)$ \\
+Corte en lag $q$ & Decae exponencial & MA$(q)$ \\
+\rowcolor{rowA} Ambas decaen & Ambas decaen & ARMA$(p,q)$ \\
+No decae & Lag 1 $\approx 1$ & Diferenciación necesaria \\
+\rowcolor{rowA} Picos en múltiplos de $s$ & Picos en múltiplos de $s$ & SARIMA \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\newpage
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Tres Ejemplos con Datos Financieros}
+
+Las series utilizadas son datos financieros con parámetros calibrados a mercados reales
+(2018--2024): retornos del S\&P~500 (1\,500 observaciones diarias), precio de AAPL
+(1\,500 obs.\ diarias) y tipo de cambio MXN/USD (72 obs.\ mensuales).
+Los modelos se ajustaron con \texttt{statsmodels} en Python~3.12.
+
+% ── Ejemplo 1 ─────────────────────────────────────────────────────────────────
+\subsection{S\&P~500 --- Retornos Diarios: ARIMA$(1,0,1)$}
+
+Los retornos diarios son \textbf{estacionarios} por construcción (diferencias logarítmicas
+del nivel). El test ADF rechaza la hipótesis de raíz unitaria con
+$p\text{-value} = 0.0000$, confirmando $d=0$.
+La PACF muestra un corte en el lag~1 y la ACF decae rápidamente, sugiriendo ARIMA$(1,0,1)$.
+
+\begin{lstlisting}[caption={Ejemplo 1: S\&P 500 retornos diarios ARIMA(1,0,1)}]
+import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller
+
+# Serie: retornos diarios S&P 500 (log-diferencias)
+returns = pd.read_csv("sp500_returns.csv", index_col=0, parse_dates=True)["Close"]
+
+# Paso 1: Verificar estacionariedad
+adf = adfuller(returns)
+print(f"ADF stat={adf[0]:.4f}, p-value={adf[1]:.4f}")  # p~0 -> estacionaria
+
+# Paso 2: ARIMA(1,0,1) --- d=0 porque la serie ya es estacionaria
+model = ARIMA(returns, order=(1, 0, 1))
+result = model.fit()
+print(result.summary())
+
+# Paso 3: Diagnostico residuos
+from statsmodels.stats.diagnostic import acorr_ljungbox
+lb = acorr_ljungbox(result.resid, lags=[10])
+print(f"Ljung-Box p={lb['lb_pvalue'].iloc[0]:.4f}")  # p>0.05 -> OK
+
+# Paso 4: Pronostico 5 dias
+forecast = result.forecast(steps=5)
+print(forecast)
+\end{lstlisting}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}L{3.2cm}L{3.2cm}L{4.0cm}@{}}
+\toprule
+\rowcolor{navy}\textcolor{white}{\textbf{Métrica}} &
+\textcolor{white}{\textbf{Valor}} &
+\textcolor{white}{\textbf{Interpretación}} \\
+\midrule
+\rowcolor{rowA} ADF $p$-value & 0.0000 & $p\approx 0 \Rightarrow$ estacionaria, $d=0$ \\
+$\hat\phi_1$ (AR) & 0.0004 & Autocorrelación corto plazo \\
+\rowcolor{rowA} $\hat\theta_1$ (MA) & -0.1823 & Corrección por choque previo \\
+AIC & -9224.05 & Criterio de información \\
+\rowcolor{rowA} BIC & -9202.79 & Criterio bayesiano \\
+Ljung-Box $p$ & 0.9888 & $p>0.05 \Rightarrow$ residuos ruido blanco $\checkmark$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Interpretación:} El coeficiente AR(1) cercano a cero es consistente con la hipótesis
+de mercados eficientes en forma débil. El MA(1) negativo refleja reversión parcial
+(bid-ask bounce). Los residuos pasan el test Ljung-Box, confirmando buen ajuste.
+
+% ── Ejemplo 2 ─────────────────────────────────────────────────────────────────
+\subsection{AAPL --- Log-Precio: ARIMA$(1,1,0)$}
+
+El log-precio de AAPL es \textbf{no estacionario}: ADF nivel $p=0.9610$.
+Al tomar primera diferencia, el ADF arroja $p=0.0000$, confirmando $d=1$.
+La PACF sobre las diferencias muestra un corte en lag~1, señalando AR(1).
+
+\begin{lstlisting}[caption={Ejemplo 2: AAPL log-precio ARIMA(1,1,0)}]
+import numpy as np
+import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller
+
+price    = pd.read_csv("aapl_close.csv", index_col=0, parse_dates=True)["Close"]
+log_price = np.log(price)
+
+# Confirmar raiz unitaria en nivel
+adf_nivel = adfuller(log_price)
+print(f"ADF nivel: p={adf_nivel[1]:.4f}")   # p~0.96 -> NO estacionaria
+
+# Primera diferencia es estacionaria
+adf_diff  = adfuller(log_price.diff().dropna())
+print(f"ADF diff:  p={adf_diff[1]:.4f}")    # p~0.00 -> estacionaria
+
+# ARIMA(1,1,0)
+model  = ARIMA(log_price, order=(1, 1, 0))
+result = model.fit()
+
+# Pronostico en escala original (exponenciar)
+fc_log   = result.forecast(steps=5)
+fc_price = np.exp(fc_log)
+print(fc_price)
+\end{lstlisting}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}L{3.4cm}L{3.0cm}L{4.0cm}@{}}
+\toprule
+\rowcolor{teal}\textcolor{white}{\textbf{Métrica}} &
+\textcolor{white}{\textbf{Valor}} &
+\textcolor{white}{\textbf{Interpretación}} \\
+\midrule
+\rowcolor{rowG} ADF nivel & 0.9610 & $p>0.05 \Rightarrow$ raíz unitaria $\Rightarrow d\geq1$ \\
+ADF primera diferencia & 0.0000 & $p<0.05 \Rightarrow d=1$ suficiente \\
+\rowcolor{rowG} $\hat\phi_1$ (AR en $\Delta\log$) & 0.0126 & Leve autocorrelación en retornos \\
+AIC & -7745.03 & Criterio de información \\
+\rowcolor{rowG} Ljung-Box $p$ & 1.0000 & $p>0.05 \Rightarrow$ OK $\checkmark$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Interpretación:} ARIMA$(1,1,0)$ equivale a modelar los retornos logarítmicos como AR(1),
+consistente con una caminata aleatoria con leve memoria. El pronóstico en escala de precio
+se recupera exponenciando. Modelo estándar en valoración de activos y riesgo de mercado.
+
+\newpage
+
+% ── Ejemplo 3 ─────────────────────────────────────────────────────────────────
+\subsection{MXN/USD --- Tipo de Cambio Mensual: SARIMA$(1,1,1)(1,1,0)_{12}$}
+
+El MXN/USD mensual presenta tendencia (ADF $p=0.9184$)
+y estacionalidad anual ($s=12$) vinculada a remesas, turismo y ciclos fiscales.
+Se usa $d=1$ para eliminar la tendencia y $D=1$ para la componente estacional.
+
+\begin{lstlisting}[caption={Ejemplo 3: MXN/USD mensual SARIMA(1,1,1)(1,1,0)12}]
+import pandas as pd
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+from statsmodels.tsa.stattools import adfuller
+
+mxn = pd.read_csv("mxnusd_monthly.csv", index_col=0,
+                  parse_dates=True, freq="MS")["DEXMXUS"]
+
+# Test estacionariedad
+adf = adfuller(mxn)
+print(f"ADF nivel: p={adf[1]:.4f}")   # p>0.05 -> diferenciacion necesaria
+
+# SARIMA(1,1,1)(1,1,0)_12
+#   d=1: elimina tendencia
+#   D=1: elimina estacionalidad
+#   s=12: ciclo anual
+model = SARIMAX(mxn,
+                order=(1, 1, 1),
+                seasonal_order=(1, 1, 0, 12))
+result = model.fit(disp=False)
+print(f"AIC={result.aic:.2f}, BIC={result.bic:.2f}")
+
+# Pronostico 6 meses
+forecast = result.forecast(steps=6)
+print(forecast)
+\end{lstlisting}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}L{3.8cm}L{2.6cm}L{4.0cm}@{}}
+\toprule
+\rowcolor{navy}\textcolor{white}{\textbf{Métrica}} &
+\textcolor{white}{\textbf{Valor}} &
+\textcolor{white}{\textbf{Interpretación}} \\
+\midrule
+\rowcolor{rowA} ADF nivel & 0.9184 & $p>0.05 \Rightarrow$ raíz unitaria \\
+ADF primera diferencia & 0.0000 & $p<0.05 \Rightarrow d=1$ correcto \\
+\rowcolor{rowA} $\hat\phi_1$ (AR no estacional) & 0.3584 & Inercia mensual corto plazo \\
+$\hat\theta_1$ (MA no estacional) & -0.9986 & Corrección choque mensual \\
+\rowcolor{rowA} $\hat\Phi_1$ (AR estacional) & -0.3678 & Persistencia patrón anual \\
+AIC & 111.03 & Criterio de información \\
+\rowcolor{rowA} Ljung-Box $p$ & 0.9991 & $p>0.05 \Rightarrow$ OK $\checkmark$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Interpretación:} El AR estacional con $s=12$ captura que el MXN de un mes está
+correlacionado con el mismo mes del año anterior (ciclos de remesas y turismo).
+La diferenciación $D=1$ elimina la tendencia estacional. Útil para cobertura cambiaria
+en horizontes de 6--12 meses en tesorería corporativa.
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Tabla Comparativa}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}L{3.2cm}L{2.5cm}L{2.5cm}L{2.5cm}@{}}
+\toprule
+\rowcolor{navy}\textcolor{white}{\textbf{Característica}} &
+\textcolor{white}{\textbf{Ej.\ 1: S\&P~500}} &
+\textcolor{white}{\textbf{Ej.\ 2: AAPL}} &
+\textcolor{white}{\textbf{Ej.\ 3: MXN/USD}} \\
+\midrule
+\rowcolor{rowA} Modelo & ARIMA$(1,0,1)$ & ARIMA$(1,1,0)$ & SARIMA$(1,1,1)(1,1,0)_{12}$ \\
+Frecuencia & Diaria & Diaria & Mensual \\
+\rowcolor{rowA} Observaciones & 1\,500 & 1\,500 & 72 \\
+Estacionaria (nivel) & Sí & No & No \\
+\rowcolor{rowA} $d$ & 0 & 1 & 1 \\
+$D$ & --- & --- & 1 \\
+\rowcolor{rowA} $s$ & --- & --- & 12 \\
+AIC & -9224.0 & -7745.0 & 111.0 \\
+\rowcolor{rowA} BIC & -9202.8 & -7734.4 & 119.3 \\
+Ljung-Box $p$ & 0.9888 & 1.0000 & 0.9991 \\
+\rowcolor{rowA} Residuos RB & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+Aplicación & VaR / retorno & Valoración & Cobertura cambiaria \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Metodología Box-Jenkins}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}L{0.6cm}L{2.8cm}L{2.8cm}L{4.0cm}@{}}
+\toprule
+\textbf{\#} & \textbf{Etapa} & \textbf{Acción} & \textbf{Herramienta Python} \\
+\midrule
+\rowcolor{rowA} 1 & Visualización & Graficar la serie; detectar tendencia y estacionalidad & \texttt{plot(), seasonal\_decompose()} \\
+2 & Estacionariedad & Test ADF/KPSS; diferenciar si es necesario & \texttt{adfuller(), kpss()} \\
+\rowcolor{rowA} 3 & Identificación & Leer ACF y PACF; proponer $p,q,P,Q$ & \texttt{plot\_acf(), plot\_pacf()} \\
+4 & Estimación & Ajustar el modelo propuesto & \texttt{ARIMA().fit(), SARIMAX().fit()} \\
+\rowcolor{rowA} 5 & Diagnóstico & Verificar residuos: ruido blanco y normalidad & \texttt{plot\_diagnostics(), Ljung-Box} \\
+6 & Selección & Comparar AIC/BIC; elegir modelo parsimonioso & \texttt{aic, bic, auto\_arima()} \\
+\rowcolor{rowA} 7 & Pronóstico & Generar predicciones con intervalos de confianza & \texttt{forecast(), get\_forecast()} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{12pt}
+\noindent\rule{\linewidth}{0.4pt}\\
+\small Informe elaborado para el curso \textit{Series de Tiempo para Finanzas} (Dr.\ César Galindo) $\cdot$ Abril 2026.
+Datos: calibrados a mercados financieros 2018--2024.
+Librerías: \texttt{statsmodels~0.14}, \texttt{pandas}, \texttt{numpy}, \texttt{matplotlib} $\cdot$ Python~3.12.
+
+\end{document}
